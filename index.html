@@ -726,6 +726,12 @@ gtag('config', 'G-GSHBQXBM2F');
       });
 
       if (res.ok) {
+  gtag('event', 'registration_submit', {
+    event_category: 'form',
+    event_label: 'landing_page',
+    value: 1
+  });
+
         msg.textContent   = "🎉 You're registered! Check your email for confirmation.";
         msg.className     = "success";
         msg.style.display = "block";
