@@ -230,7 +230,7 @@
 
     // 1. Supabase visitors table
     try {
-      const { error } = await sb.from('visitors').insert([visitorData]);
+      const { error } = await sb.from('visitor').insert([visitorData]);
       if (error) console.warn('Supabase visitor error:', error.message);
     } catch(e) { console.warn('Supabase visitor failed:', e); }
 
