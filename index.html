@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TechSummit 2025 — Register Now</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink:    #0a0a0f;
+      --paper:  #f5f3ee;
+      --accent: #ff4d00;
+      --gold:   #f5c518;
+      --muted:  #6b6b6b;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255,77,0,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(245,197,24,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 6vw;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+    }
+    .logo span { color: var(--accent); }
+
+    .nav-tag {
+      background: var(--accent);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 2px;
+    }
+
+    .hero-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 6vw 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 32px; height: 2px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 11vw, 9rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      margin-bottom: 32px;
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+      display: block;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .meta-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .meta-value {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .hero-desc {
+      max-width: 540px;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 40px;
+    }
+
+    .stats-strip {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      padding: 28px 6vw;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.5);
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--ink);
+      letter-spacing: 0.05em;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 0;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 80px 6vw;
+      align-items: start;
+    }
+
+    /* ── LEFT: SPEAKERS ── */
+    .speakers-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 36px;
+    }
+
+    .speakers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .speaker-card {
+      background: white;
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .speaker-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    .speaker-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .speaker-name {
+      font-weight: 600;
+      font-size: 0.92rem;
+      margin-bottom: 3px;
+    }
+    .speaker-role {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .speaker-company {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .agenda-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .agenda-list { list-style: none; }
+    .agenda-item {
+      display: flex;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .agenda-time {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      color: var(--accent);
+      min-width: 70px;
+      letter-spacing: 0.06em;
+      padding-top: 2px;
+    }
+    .agenda-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .agenda-speaker {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ── RIGHT: FORM ── */
+    .form-col {
+      position: sticky;
+      top: 32px;
+    }
+
+    .form-card {
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 12px;
+      padding: 40px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(255,77,0,0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .form-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--ink);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    .form-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .form-card p {
+      font-size: 0.88rem;
+      color: rgba(245,243,238,0.6);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .field-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,243,238,0.5);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--paper);
+      padding: 13px 16px;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      transition: border 0.2s, background 0.2s;
+      outline: none;
+    }
+    input::placeholder { color: rgba(245,243,238,0.3); }
+    input:focus {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 6px;
+    }
+    .submit-btn:hover:not(:disabled) {
+      background: #e04400;
+      transform: translateY(-1px);
+    }
+    .submit-btn:disabled { background: #555; cursor: not-allowed; transform: none; }
+
+    .form-footer {
+      margin-top: 16px;
+      font-size: 0.75rem;
+      color: rgba(245,243,238,0.35);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    #msg {
+      display: none;
+      text-align: center;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 14px;
+    }
+    #msg.success { background: rgba(34,160,107,0.2); color: #4ade80; }
+    #msg.error   { background: rgba(229,62,62,0.2);  color: #fc8181; }
+
+    .spots-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      font-size: 0.8rem;
+      color: rgba(245,243,238,0.5);
+    }
+    .spots-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-body > * {
+      animation: fadeUp 0.7s ease both;
+    }
+    .hero-body > *:nth-child(1) { animation-delay: 0.1s; }
+    .hero-body > *:nth-child(2) { animation-delay: 0.2s; }
+    .hero-body > *:nth-child(3) { animation-delay: 0.3s; }
+    .hero-body > *:nth-child(4) { animation-delay: 0.4s; }
+    .hero-body > *:nth-child(5) { animation-delay: 0.5s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .main {
+        grid-template-columns: 1fr;
+        padding: 48px 6vw;
+        gap: 48px;
+      }
+      .form-col { position: static; }
+      .speakers-grid { grid-template-columns: 1fr; }
+      h1 { font-size: clamp(3.5rem, 15vw, 6rem); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <nav>
+    <div class="logo">Tech<span>Summit</span></div>
+    <div class="nav-tag">📍 Mumbai · Nov 14–15, 2025</div>
+  </nav>
+
+  <div class="hero-body">
+    <div class="eyebrow">Annual Tech Conference</div>
+    <h1>Build The<em>Future.</em></h1>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Date</span>
+        <span class="meta-value">Nov 14–15, 2025</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Venue</span>
+        <span class="meta-value">NSCI Dome, Mumbai</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Format</span>
+        <span class="meta-value">In-Person + Live Stream</span>
+      </div>
+    </div>
+    <p class="hero-desc">
+      Two days of talks, workshops, and networking with the brightest minds in AI, product, and engineering. 40+ speakers. 2000+ attendees. One unforgettable event.
+    </p>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat">
+      <div class="stat-num">40<span>+</span></div>
+      <div class="stat-label">Speakers</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2K<span>+</span></div>
+      <div class="stat-label">Attendees</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">18<span>+</span></div>
+      <div class="stat-label">Workshops</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Days</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- LEFT COLUMN -->
+  <div>
+    <section class="speakers-section">
+      <h2>Featured Speakers</h2>
+      <p class="section-sub">World-class experts across AI, design, and engineering</p>
+      <div class="speakers-grid">
+        <div class="speaker-card">
+          <div class="speaker-avatar" style="background:#fff0eb;">🧠</div>
+          <div>
+            <div class="speaker-name">Ananya Rao</div>
+            <div class="speaker-role">VP of AI Research</div>
+            <div class="speaker-company">DeepMind</div>
+          </div>
+        </div>
+        <div class="speaker-card">
+          <div class="speaker-avatar" style="background:#f0f7ff;">🚀</div>
+          <div>
+            <div class="speaker-name">Karan Mehta</div>
+            <div class="speaker-role">Founder & CEO</div>
+            <div class="speaker-company">Zepto</div>
+          </div>
+        </div>
+        <div class="speaker-card">
+          <div class="speaker-avatar" style="background:#f5fff0;">🎨</div>
+          <div>
+            <div class="speaker-name">Priya Sharma</div>
+            <div class="speaker-role">Head of Design</div>
+            <div class="speaker-company">Figma</div>
+          </div>
+        </div>
+        <div class="speaker-card">
+          <div class="speaker-avatar" style="background:#fffbf0;">⚡</div>
+          <div>
+            <div class="speaker-name">Rohan Gupta</div>
+            <div class="speaker-role">Staff Engineer</div>
+            <div class="speaker-company">Google</div>
+          </div>
+        </div>
+        <div class="speaker-card">
+          <div class="speaker-avatar" style="background:#f8f0ff;">🔬</div>
+          <div>
+            <div class="speaker-name">Sneha Patil</div>
+            <div class="speaker-role">ML Lead</div>
+            <div class="speaker-company">OpenAI</div>
+          </div>
+        </div>
+        <div class="speaker-card">
+          <div class="speaker-avatar" style="background:#fff0f5;">💡</div>
+          <div>
+            <div class="speaker-name">Arjun Nair</div>
+            <div class="speaker-role">CTO</div>
+            <div class="speaker-company">Razorpay</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="agenda-section">
+      <h2>Day 1 Agenda</h2>
+      <p class="section-sub">Nov 14, 2025 · NSCI Dome, Mumbai</p>
+      <ul class="agenda-list">
+        <li class="agenda-item">
+          <span class="agenda-time">9:00 AM</span>
+          <div>
+            <div class="agenda-title">Opening Keynote: The AI Decade</div>
+            <div class="agenda-speaker">Ananya Rao · DeepMind</div>
+          </div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-time">10:30 AM</span>
+          <div>
+            <div class="agenda-title">Building at Startup Speed</div>
+            <div class="agenda-speaker">Karan Mehta · Zepto</div>
+          </div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-time">12:00 PM</span>
+          <div>
+            <div class="agenda-title">Design for a Billion Users</div>
+            <div class="agenda-speaker">Priya Sharma · Figma</div>
+          </div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-time">2:00 PM</span>
+          <div>
+            <div class="agenda-title">Workshop: LLMs in Production</div>
+            <div class="agenda-speaker">Sneha Patil · OpenAI</div>
+          </div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-time">4:30 PM</span>
+          <div>
+            <div class="agenda-title">Panel: Future of Indian Tech</div>
+            <div class="agenda-speaker">All Speakers</div>
+          </div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-time">6:00 PM</span>
+          <div>
+            <div class="agenda-title">Networking Dinner & Demos</div>
+            <div class="agenda-speaker">Open to all registered attendees</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- RIGHT: FORM -->
+  <div class="form-col">
+    <div class="form-card">
+      <div class="form-badge">⚡ Free Registration</div>
+      <h3>Reserve Your Spot</h3>
+      <p>Limited seats available. Register now to secure your place at TechSummit 2025.</p>
+
+      <div class="spots-left">
+        <div class="spots-dot"></div>
+        <span>Only 147 spots remaining</span>
+      </div>
+
+      <div class="field-group">
+        <div>
+          <div class="field-label">Full Name</div>
+          <input type="text" id="name" placeholder="Rahul Sharma" />
+        </div>
+        <div>
+          <div class="field-label">Email Address</div>
+          <input type="email" id="email" placeholder="rahul@email.com" />
+        </div>
+        <div>
+          <div class="field-label">Phone Number</div>
+          <input type="tel" id="phone" placeholder="+91 98765 43210" />
+        </div>
+      </div>
+
+      <button class="submit-btn" id="btn" onclick="submitForm()">
+        Register for Free →
+      </button>
+      <p id="msg"></p>
+
+      <p class="form-footer">
+        No spam, ever. We'll only send you event updates and your ticket confirmation.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  © 2025 TechSummit. Made with ❤️ in Mumbai.
+</footer>
+
+<script>
+  // ═══════════════════════════════════════════════
+  //  CONFIGURATION — all filled in ✅
+  // ═══════════════════════════════════════════════
+  const CONFIG = {
+    GOOGLE_FORM_ID:  "1FAIpQLSd9X0TzlTXTSZ3mFimYNFP-9sUoe7A8BuWKqKrdlBZ9t7ahUw",
+    ENTRY_NAME:      "entry.1818516291",
+    ENTRY_EMAIL:     "entry.1910041915",
+    ENTRY_PHONE:     "entry.1191086883",
+    TRACKING_SCRIPT: "https://script.google.com/macros/s/AKfycbwdFWPMqb6SLu6xjdR2TTXDhxTwYkzoDAeCL6pJBV-2tK22sWrG5NIQeMdaTb2G3mAn/exec",
+  };
+  // ═══════════════════════════════════════════════
+
+  // Track visitor silently on page load
+  fetch("/api/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type:      "visitor",
+      page:      location.href,
+      referrer:  document.referrer || "Direct",
+      userAgent: navigator.userAgent,
+      time:      new Date().toISOString(),
+      config:    CONFIG
+    })
+  }).catch(() => {});
+
+  async function submitForm() {
+    const name  = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const btn   = document.getElementById("btn");
+    const msg   = document.getElementById("msg");
+
+    if (!name || !email || !phone) {
+      alert("Please fill in all fields.");
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert("Please enter a valid email.");
+      return;
+    }
+
+    btn.disabled    = true;
+    btn.textContent = "Registering...";
+    msg.style.display = "none";
+
+    try {
+      const res = await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "form", name, email, phone, config: CONFIG
+        })
+      });
+
+      if (res.ok) {
+        msg.textContent   = "🎉 You're registered! Check your email for confirmation.";
+        msg.className     = "success";
+        msg.style.display = "block";
+        document.getElementById("name").value  = "";
+        document.getElementById("email").value = "";
+        document.getElementById("phone").value = "";
+        btn.textContent = "Register for Free →";
+      } else {
+        throw new Error("Server error");
+      }
+    } catch {
+      msg.textContent   = "❌ Something went wrong. Please try again.";
+      msg.className     = "error";
+      msg.style.display = "block";
+      btn.textContent   = "Register for Free →";
+    }
+    btn.disabled = false;
+  }
+</script>
+</body>
+</html>
