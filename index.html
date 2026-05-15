@@ -751,16 +751,21 @@ window.supabase.createClient(
     value: 1
   });
 
-        await supabase
-  .from('registration')
-  .insert([
-  {
-      timestamp: new Date().toISOString(),
-      Name: name,
-      Email: email,
-      Phone: phone
-  }
-  ]);
+      const { error } = await supabase
+.from('registration')
+.insert([
+{
+timestamp: new Date().toISOString(),
+Name: name,
+Email: email,
+Phone: phone
+}
+]);
+
+if (error) {
+console.log(error);
+throw error;
+}
         msg.textContent   = "🎉 You're registered! Check your email for confirmation.";
         msg.className     = "success";
         msg.style.display = "block";
