@@ -7,7 +7,6 @@ export default async function handler(req, res) {
 
   const { type, name, email, phone } = req.body;
 
-  // ✅ Your real values — already filled in
   const GOOGLE_FORM_ID  = "1FAIpQLSd9X0TzlTXTSZ3mFimYNFP-9sUoe7A8BuWKqKrdlBZ9t7ahUw";
   const ENTRY_NAME      = "entry.1818516291";
   const ENTRY_EMAIL     = "entry.1910041915";
@@ -16,27 +15,48 @@ export default async function handler(req, res) {
 
   try {
 
-    // ── VISITOR → Google Sheet via Apps Script ──
+    // ── VISITOR TRACKING ──
     if (type === "visitor") {
-      await fetch(TRACKING_SCRIPT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          time:      new Date().toISOString(),
+      const payload = JSON.stringify({
+        time:      req.body.time      || new Date().toISOString(),
+        page:      req.body.page      || "",
+        referrer:  req.body.referrer  || "Direct",
+        userAgent: req.body.userAgent || "",
+      });
+
+      // Try POST first, fall back to GET with params
+      try {
+        const postRes = await fetch(TRACKING_SCRIPT, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" }, // text/plain bypasses CORS preflight
+          body: payload,
+          redirect: "follow",
+        });
+        console.log("Visitor POST status:", postRes.status);
+      } catch (postErr) {
+        console.log("POST failed, trying GET fallback:", postErr.message);
+        // GET fallback — encode data as query params
+        const params = new URLSearchParams({
+          time:      req.body.time      || new Date().toISOString(),
           page:      req.body.page      || "",
           referrer:  req.body.referrer  || "Direct",
           userAgent: req.body.userAgent || "",
-        }),
-      });
+        });
+        await fetch(`${TRACKING_SCRIPT}?${params.toString()}`, {
+          method: "GET",
+          redirect: "follow",
+        });
+      }
+
       return res.status(200).json({ status: "visitor logged" });
     }
 
-    // ── FORM SUBMISSION → Google Forms ──
+    // ── FORM SUBMISSION ──
     if (type === "form") {
       const formData = new URLSearchParams({
-        [ENTRY_NAME]:  name,
-        [ENTRY_EMAIL]: email,
-        [ENTRY_PHONE]: phone,
+        [ENTRY_NAME]:  name  || "",
+        [ENTRY_EMAIL]: email || "",
+        [ENTRY_PHONE]: phone || "",
       });
 
       await fetch(
@@ -55,6 +75,6 @@ export default async function handler(req, res) {
 
   } catch (err) {
     console.error("API error:", err);
-    return res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: "Server error", detail: err.message });
   }
 }
