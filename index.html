@@ -215,13 +215,20 @@
   // Detect device
   const device = /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
 
+  // IST timestamp helper (UTC+5:30)
+  function nowIST() {
+    const now = new Date();
+    const ist = new Date(now.getTime() + (5.5 * 60 * 60 * 1000));
+    return ist.toISOString().replace('T', ' ').substring(0, 19) + ' IST';
+  }
+
   // ─────────────────────────────────────────────
   // VISITOR TRACKING — fires on every page load
   // Saves to: Supabase visitors table + Google Sheet
   // ─────────────────────────────────────────────
   (async function trackVisitor() {
     const visitorData = {
-      timestamp:  new Date().toISOString(),
+      timestamp:  nowIST(),
       page:       window.location.href,
       referrer:   document.referrer || 'Direct',
       device:     device,
@@ -272,7 +279,7 @@
     try {
       // 1. Save to Supabase registration table
       const { error: sbError } = await sb.from('registration').insert([{
-        timestamp:  new Date().toISOString(),
+        timestamp:  nowIST(),
         Name:       name,
         Email:      email,
         Phone:      phone,
