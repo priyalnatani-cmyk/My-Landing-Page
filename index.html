@@ -267,7 +267,15 @@
   // FORM SUBMIT
   // Saves to: Supabase registration + Google Forms
   // ─────────────────────────────────────────────
-  // Duplicate guard — tracks last submission
+  // Inline error helper
+  function showInlineError(text) {
+    const msg = document.getElementById('msg');
+    msg.textContent   = text;
+    msg.className     = 'error';
+    msg.style.display = 'block';
+  }
+
+    // Duplicate guard — tracks last submission
   let lastSubmitKey  = '';
   let lastSubmitTime = 0;
 
@@ -278,8 +286,22 @@
     const btn   = document.getElementById('btn');
     const msg   = document.getElementById('msg');
 
-    if (!name || !email || !phone) { alert('Please fill in all fields.'); return; }
-    if (!email.includes('@') || !email.includes('.')) { alert('Please enter a valid email.'); return; }
+    // ── Validation ──
+    if (!name || !email || !phone) {
+      showInlineError('Please fill in all fields.'); return;
+    }
+    if (name.length < 2) {
+      showInlineError('Please enter your full name.'); return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRegex.test(email)) {
+      showInlineError('Please enter a valid email address (e.g. rahul@gmail.com).'); return;
+    }
+    // Strip spaces, dashes, +, and optional 91 country code — then check 10 digits
+    const phoneDigits = phone.replace(/[\s\-\+]/g, '').replace(/^91/, '');
+    if (!/^\d{10}$/.test(phoneDigits)) {
+      showInlineError('Please enter a valid 10-digit mobile number (e.g. 9876543210).'); return;
+    }
 
     // Guard 1 — block double-click within 10 seconds
     const submitKey = name + '|' + email + '|' + phone;
