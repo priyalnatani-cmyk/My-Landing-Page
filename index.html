@@ -215,11 +215,16 @@
   // Detect device
   const device = /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop';
 
-  // IST timestamp helper (UTC+5:30)
+  // IST timestamp helper (UTC+5:30) — returns readable string e.g. "15-05-2026 16:52 IST"
   function nowIST() {
     const now = new Date();
     const ist = new Date(now.getTime() + (5.5 * 60 * 60 * 1000));
-    return ist.toISOString().replace('T', ' ').substring(0, 19) + ' IST';
+    const dd   = String(ist.getUTCDate()).padStart(2,'0');
+    const mm   = String(ist.getUTCMonth()+1).padStart(2,'0');
+    const yyyy = ist.getUTCFullYear();
+    const hh   = String(ist.getUTCHours()).padStart(2,'0');
+    const min  = String(ist.getUTCMinutes()).padStart(2,'0');
+    return dd + '-' + mm + '-' + yyyy + ' ' + hh + ':' + min + ' IST';
   }
 
   // ─────────────────────────────────────────────
@@ -262,6 +267,10 @@
   // FORM SUBMIT
   // Saves to: Supabase registration + Google Forms
   // ─────────────────────────────────────────────
+  // Duplicate guard — tracks last submission
+  let lastSubmitKey  = '';
+  let lastSubmitTime = 0;
+
   async function submitForm() {
     const name  = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
@@ -270,14 +279,41 @@
     const msg   = document.getElementById('msg');
 
     if (!name || !email || !phone) { alert('Please fill in all fields.'); return; }
-    if (!/\S+@\S+\.\S+/.test(email)) { alert('Please enter a valid email.'); return; }
+    if (!email.includes('@') || !email.includes('.')) { alert('Please enter a valid email.'); return; }
+
+    // Guard 1 — block double-click within 10 seconds
+    const submitKey = name + '|' + email + '|' + phone;
+    if (submitKey === lastSubmitKey && (Date.now() - lastSubmitTime) < 10000) {
+      msg.textContent   = 'Already submitted! Please wait a moment.';
+      msg.className     = 'error';
+      msg.style.display = 'block';
+      return;
+    }
 
     btn.disabled    = true;
     btn.textContent = 'Registering...';
     msg.style.display = 'none';
 
     try {
-      // 1. Save to Supabase registration table
+      // Guard 2 — check Supabase for exact duplicate (same Name + Email + Phone)
+      const { data: existing } = await sb
+        .from('registration')
+        .select('id')
+        .eq('Email', email)
+        .eq('Phone', phone)
+        .eq('Name',  name)
+        .limit(1);
+
+      if (existing && existing.length > 0) {
+        msg.textContent   = 'You are already registered with these details!';
+        msg.className     = 'error';
+        msg.style.display = 'block';
+        btn.disabled    = false;
+        btn.textContent = 'Register for Free →';
+        return;
+      }
+
+      // 1. Save to Supabase
       const { error: sbError } = await sb.from('registration').insert([{
         timestamp:  nowIST(),
         Name:       name,
@@ -290,7 +326,11 @@
 
       if (sbError) throw new Error('Supabase: ' + sbError.message);
 
-      // 2. Send to Google Forms (best-effort, no-cors — data already safe in Supabase)
+      // Save key so double-click is blocked
+      lastSubmitKey  = submitKey;
+      lastSubmitTime = Date.now();
+
+      // 2. Send to Google Forms (best-effort)
       try {
         const fd = new FormData();
         fd.append(ENTRY_NAME,  name);
@@ -300,7 +340,7 @@
           'https://docs.google.com/forms/d/e/' + GOOGLE_FORM_ID + '/formResponse',
           { method:'POST', body:fd, mode:'no-cors' }
         );
-      } catch(_) { /* CORS expected from Google Forms — data is safe in Supabase */ }
+      } catch(_) {}
 
       // 3. GA4 event
       gtag('event', 'registration_complete', {
@@ -309,23 +349,24 @@
         value: 1
       });
 
-      // 4. Success
-      msg.textContent   = '🎉 You\'re registered! See you at TechSummit 2025.';
+      // 4. Success — lock button permanently so they cannot resubmit
+      msg.textContent   = 'You are registered! See you at TechSummit 2025.';
       msg.className     = 'success';
       msg.style.display = 'block';
       document.getElementById('name').value  = '';
       document.getElementById('email').value = '';
       document.getElementById('phone').value = '';
+      btn.textContent = 'Registered';
+      return; // button stays disabled
 
     } catch(err) {
       console.error('Submit error:', err);
-      msg.textContent   = '❌ Registration failed: ' + (err.message || 'Please try again.');
+      msg.textContent   = 'Registration failed: ' + (err.message || 'Please try again.');
       msg.className     = 'error';
       msg.style.display = 'block';
+      btn.disabled    = false;
+      btn.textContent = 'Register for Free →';
     }
-
-    btn.disabled    = false;
-    btn.textContent = 'Register for Free →';
   }
 </script>
 </body>
